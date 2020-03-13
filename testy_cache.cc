@@ -234,15 +234,10 @@ TEST_CASE("Eviction policy / Checks Fifo Evictor")
     Cache cacheobj3(20, 0.75, &fifo3);
 
     cacheobj3.set("a", "ant", 3);
-    cout<<cacheobj3.space_used()<<endl;
     cacheobj3.set("b", "ball", 4);
-    cout<<cacheobj3.space_used()<<endl;
     cacheobj3.set("c", "campus", 6);
-    cout<<cacheobj3.space_used()<<endl;
     cacheobj3.set("a", "appless", 7);    //Reset a with a bigger sze
-    cout<<cacheobj3.space_used()<<endl;
     cacheobj3.set("d", "dungeon", 7);
-    cout<<cacheobj3.space_used()<<endl;
 
     //Over here, we are Incrementng a so that only "a" gets evicted instead of both a and b
     REQUIRE(cacheobj3.space_used() == 17);
