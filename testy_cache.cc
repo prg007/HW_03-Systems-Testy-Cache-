@@ -202,6 +202,11 @@ TEST_CASE("Fifo Evictor")
       REQUIRE(fifoobj.evict() == "cucumber");
     }
 
+    SECTION("Returns null string if queue is empty")
+    {
+      FifoEvictor fifoobj;
+      REQUIRE(fifoobj.evict() == "");
+    }
 }
 
 //Integration Testing, checks both Cache and Evictor working in conjunction

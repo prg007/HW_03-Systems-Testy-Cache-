@@ -13,10 +13,10 @@
 
 class Cache {
  private:
-   // All internal data and functionality is hidden using the Pimpl idiom
-   // (see here: https://www.fluentcpp.com/2017/09/22/make-pimpl-using-unique_ptr/)
+   // All internal data and functionality is hidden using the pImpl idiom
+   // (see here: https://www.fluentcpp.com/2017/09/22/make-pImpl-using-unique_ptr/)
   class Impl;
-  std::unique_ptr<Impl> pimpl_;
+  std::unique_ptr<Impl> pImpl_;
 
  public:
   using byte_type = char;
@@ -53,7 +53,7 @@ class Cache {
 
   // Retrieve a pointer to the value associated with key in the cache,
   // or nullptr if not found.
-  // Sets the actual size of the returned value (in bytes) in val_size. 
+  // Sets the actual size of the returned value (in bytes) in val_size.
   val_type get(key_type key, size_type& val_size) const;
 
   // Delete an object from the cache, if it's still there
