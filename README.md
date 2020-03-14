@@ -63,7 +63,7 @@ Integration Test (Cache + Evictor) | Check eviction of single entry | Fail
 ... | Checks eviction of multiple entries | Fail
 ... | Checks eviction of multiple entries by resetting a key with a larger value | Pass
 
-The only compilation/linking issue we faced with Eric + Vinay's code is the name of the FifoEvictor class in their implementation. In ours, it was `FifoEvictor` but in theirs it was `Fifo`. For it to compile and be compatible with our test cases, we had to change all instances of `Fifo` to `FifoEvictor` in their interface/implementation. The number of fails in their code may be attributed to different assumptions made when they wrote their Cache (as a number of instructions in the assigment were left to interpretation, such as what happens when to the val_size when getting an invalid key). 
+The only compilation/linking issue we faced with Eric + Vinay's code is the name of the FifoEvictor class in their implementation. In ours, it was `FifoEvictor` but in theirs it was `Fifo`. For it to compile and be compatible with our test cases, we had to change all instances of `Fifo` to `FifoEvictor` in their interface/implementation. The number of fails in their code may be attributed to bugs and/or different assumptions made when they wrote their Cache (as a number of instructions in the assigment were left to interpretation, such as what happens when to the val_size when getting an invalid key). 
 
 ### Jon + Eli
 Test name | Description | Pass/Fail 
@@ -72,9 +72,9 @@ Cache Accepts input | Check that the cache is initialized with zero memory use |
  ... | Cache doesn't accept input that exceeds maxmems | Pass
 ... | Accepts 1st input and make the value of 2nd input greater than maxmem | Pass
 ... | Cache accepts input with a given key-value and then resets key with a new value | Pass
-... | Cache resets existing key where sum of previous and updated value exceeds maxmem | Fail
+... | Cache resets existing key where sum of previous and updated value exceeds maxmem | Pass
 Check Cache contents | Gets valid values associated with each key_type and resets variable sent in the get method to correct length of value | Pass 
-... | Gets nullptr for invalid key in cache | Pass
+... | Gets nullptr for invalid key in cache | Fail
 Check Cache deletion | Deletes valid keys and checks if size has been updated | Pass
 ... | Deletes non-existent keys and checks that size hasn't been modified | Pass
 Check Cache resets | Size of Cache should be zero if reset nonempty cache | Pass 
@@ -88,7 +88,7 @@ Integration Test (Cache + Evictor) | Check eviction of single entry | Pass
 ... | Checks eviction of multiple entries | Pass
 ... | Checks eviction of multiple entries by resetting a key with a larger value | Pass
 
-We encountered no nontrivial compilation/linking errors with Jon + Eli, apart from renaming FifoEvictor.
+We encountered no nontrivial compilation/linking errors with Jon + Eli, apart from renaming FifoEvictor. They passed 28 out of 30 assertions(Or REQUIRED) statements. In evictor, while evicting a key, they forget to check if the queue is empty first in which case it should return an empty string. Also, in get method for an invalid key, we are operating under the assumption that the variable val_size passed by reference does not change. It seems that Eli + Jon reset val_size to zero in this edge case. Both interpretations are fine. 
 
 ### Albert + Yao
 Test name | Description | Pass/Fail 
@@ -97,9 +97,9 @@ Cache Accepts input | Check that the cache is initialized with zero memory use |
  ... | Cache doesn't accept input that exceeds maxmems | Pass
 ... | Accepts 1st input and make the value of 2nd input greater than maxmem | Pass
 ... | Cache accepts input with a given key-value and then resets key with a new value | Pass
-... | Cache resets existing key where sum of previous and updated value exceeds maxmem | Fail
+... | Cache resets existing key where sum of previous and updated value exceeds maxmem | Pass
 Check Cache contents | Gets valid values associated with each key_type and resets variable sent in the get method to correct length of value | Pass 
-... | Gets nullptr for invalid key in cache | Pass
+... | Gets nullptr for invalid key in cache | Fail
 Check Cache deletion | Deletes valid keys and checks if size has been updated | Pass
 ... | Deletes non-existent keys and checks that size hasn't been modified | Pass
 Check Cache resets | Size of Cache should be zero if reset nonempty cache | Pass 
@@ -113,4 +113,4 @@ Integration Test (Cache + Evictor) | Check eviction of single entry | Pass
 ... | Checks eviction of multiple entries | Pass
 ... | Checks eviction of multiple entries by resetting a key with a larger value | Pass
 
-We encountered no nontrivial compilation/linking errors, apart from renaming FifoEvictor. 
+We encountered no nontrivial compilation/linking errors, apart from renaming FifoEvictor. According to our test, they reset val_size to zero when getting an invalid key in the cache, similar to Jon + Eli.   
