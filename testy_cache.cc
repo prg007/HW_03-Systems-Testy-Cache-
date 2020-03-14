@@ -11,9 +11,7 @@ using namespace std;
 list<key_type> hash_list;
 Cache::size_type cons(key_type key)
 {
-  // so compiler doesn't complain
   hash_list.push_back(key);
-
   return 1;
 }
 
@@ -39,9 +37,19 @@ TEST_CASE("Cache Accepts Input / Checking Set method")
     cacheobj.set("m","Moon",4);
     REQUIRE(cacheobj.space_used() == 3);
   }
+
   SECTION("Cache accepts input with a given key-value and then resets key with a new value")
   {
     Cache cacheobj(13);
+    cacheobj.set("s","sun",3);
+    REQUIRE(cacheobj.space_used() == 3);
+    cacheobj.set("s","sunflower",9);
+    REQUIRE(cacheobj.space_used() == 9);
+  }
+
+  SECTION("Cache resets existing key where sum of previous and exceeded values exceed maxmem")
+  {
+    Cache cacheobj(10);
     cacheobj.set("s","sun",3);
     REQUIRE(cacheobj.space_used() == 3);
     cacheobj.set("s","sunflower",9);
@@ -141,6 +149,7 @@ SECTION("Checks that umap has been properly cleared out. In other words checks a
     REQUIRE(cacheobj.get("z",ref_len) == nullptr);
     REQUIRE(cacheobj.get("a",ref_len) == nullptr);
     REQUIRE(cacheobj.get("b",ref_len) == nullptr);
+    REQUIRE(ref_len == 10);
   }
 
 }
@@ -192,7 +201,6 @@ TEST_CASE("Fifo Evictor")
       REQUIRE(fifoobj.evict() == "banana");
       REQUIRE(fifoobj.evict() == "cucumber");
     }
-
 
 }
 
